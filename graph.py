@@ -1,4 +1,4 @@
-"" A Python Class
+""" A Python Class
 A simple Python graph class, demonstrating the essential
 facts and functionalities of graphs.
 """
@@ -6,14 +6,21 @@ facts and functionalities of graphs.
 
 class Graph(object):
 
-   def __init__(self, graph_dict=None):
+   def __init__(self, graph_dict=None, directed=None):
        """ initializes a graph object
            If no dictionary or None is given,
            an empty dictionary will be used
        """
+
        if graph_dict == None:
            graph_dict = {}
        self.__graph_dict = graph_dict
+       self.__directed = directed
+
+
+   def is_directed(self):
+      if self.__directed:
+         return "I am directed"
 
    def vertices(self):
        """ returns the vertices of a graph """
@@ -76,6 +83,7 @@ class Graph(object):
                    return extended_path
        return None
 
+
    def __str__(self):
        res = "vertices: "
        for k in self.__graph_dict:
@@ -95,7 +103,7 @@ if __name__ == "__main__":
         "f": []
         }
 
-   graph = Graph(g)
+   graph = Graph(g, directed=True)
 
    print("Vertices of graph:")
    print(graph.vertices())
@@ -126,3 +134,4 @@ if __name__ == "__main__":
    print(graph.edges())
    print("Find path a - > b:")
    print(graph.find_path("a", "f"))
+   print(graph.is_directed())
