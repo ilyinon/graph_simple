@@ -57,8 +57,8 @@ class Graph(object):
         edges = []
         for vertex in self.__graph_dict:
             for neighbour in self.__graph_dict[vertex]:
-                if {neighbour, vertex} not in edges:
-                    edges.append({vertex, neighbour})
+                if {neighbour[0], vertex} not in edges:
+                    edges.append({vertex, neighbour[0]})
         return edges
 
     def find_path(self, start_vertex, end_vertex, path=None):
@@ -68,16 +68,28 @@ class Graph(object):
             path = []
         graph_local = self.__graph_dict
         path = path + [start_vertex]
+
         if start_vertex == end_vertex:
             return path
-        if start_vertex not in graph_local:
+        if start_vertex[0] not in graph_local:
             return None
-        for vertex in graph_local[start_vertex]:
-            if vertex not in path:
-                extended_path = self.find_path(vertex, end_vertex, path)
-                if extended_path:
-                    return extended_path
-        return None
+        if self.__directed:
+            print("I am directed")
+            for vertex in graph_local[start_vertex[0]]:
+                if vertex[0] not in path:
+                    print("!!! path, ", path)
+                    extended_path = self.find_path(vertex[0], end_vertex, path)
+                    if extended_path:
+                        return extended_path
+            return None
+        else:
+            print("I am undirected")
+            for vertex in graph_local[start_vertex[0]]:
+                if vertex[0] not in path:
+                    extended_path = self.find_path(vertex[0], end_vertex, path)
+                    if extended_path:
+                        return extended_path
+            return None
 
     def __str__(self):
         res = "vertices: "
@@ -90,11 +102,11 @@ class Graph(object):
 
 
 if __name__ == "__main__":
-    g = {"a": ["d"],
-         "b": ["c"],
-         "c": ["b", "c", "d", "e"],
-         "d": ["a", "c"],
-         "e": ["c"],
+    g = {"a": [["d", 0]],
+         "b": [["c", 0]],
+         "c": [["b", 0], ["c", 0], ["d", 0], ["e", 0]],
+         "d": [["a", 0], ["c", 0]],
+         "e": [["c", 0]],
          "f": []
          }
 
@@ -128,5 +140,5 @@ if __name__ == "__main__":
     print("Edges of graph:")
     print(graph.edges())
     print("Find path a - > b:")
-    print(graph.find_path("a", "f"))
-    print(graph.is_directed())
+    print(graph.find_path("a", "d"))
+
