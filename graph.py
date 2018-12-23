@@ -1,9 +1,3 @@
-""" A Python Class
-A simple Python graph class, demonstrating the essential
-facts and functionalities of graphs.
-"""
-
-
 class Graph(object):
 
     def __init__(self, graph_dict=None, directed=None):
@@ -76,7 +70,7 @@ class Graph(object):
         if self.__directed:
             print("I am directed")
             for vertex in graph_local[start_vertex[0]]:
-                if vertex[0] not in path:
+                if vertex[0] not in path and vertex[1]:
                     print("!!! path, ", path)
                     extended_path = self.find_path(vertex[0], end_vertex, path)
                     if extended_path:
@@ -102,11 +96,11 @@ class Graph(object):
 
 
 if __name__ == "__main__":
-    g = {"a": [["d", 0]],
-         "b": [["c", 0]],
-         "c": [["b", 0], ["c", 0], ["d", 0], ["e", 0]],
+    g = {"a": [["d", 1]],
+         "b": [["c", 1]],
+         "c": [["b", 1], ["c", 1], ["d", 1], ["e", 0]],
          "d": [["a", 0], ["c", 0]],
-         "e": [["c", 0]],
+         "e": [["c", 1]],
          "f": []
          }
 
@@ -139,6 +133,5 @@ if __name__ == "__main__":
     print(graph.vertices())
     print("Edges of graph:")
     print(graph.edges())
-    print("Find path a - > b:")
-    print(graph.find_path("a", "d"))
-
+    print("Find path a -> b:")
+    print(graph.find_path("e", "d"))
